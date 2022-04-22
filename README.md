@@ -1,5 +1,5 @@
 # FHE-cloud
-将KeyGender用于密钥生成，在本地执行
+KeyGender用于密钥生成，在本地部署
 直接在项目目录执行
 go build
 .\KeyGender.exe（linux系统没有.exe后缀）
