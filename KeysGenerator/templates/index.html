@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+        <title>密钥管理</title>
+        <!-- Bootstrap -->
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    </head>
+    <body >
+        <div class="container">
+                <div class="row">
+                    <form action="/keyGen" method="post">
+                        <div class="form-group">
+                            <label for="filename">文件名</label>
+                            <input  class="form-control" id="filename" name="filename" placeholder="输入生成的keys文件名">
+                        </div>
+                        <div class="form-group">
+                            <label for="parameter">加密参数</label>
+                            <select class="form-control" id="parameter" name="parameter">
+                                {{ range $k,$v := .ParametersMap }}
+                                <option>{{ $k }}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default">生成密钥</button>
+                    </form>
+                </div>
+                <div class="row" >
+                    <label for="keyfiles">本地密钥列表</label>
+                    <ol id="keyfiles">
+                        {{ range $k1,$v1 := .KeyFilesMap }}
+                        <li id="{{$k1}}"><a href="/download/{{$v1}}">{{$v1}}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/delete/{{$v1}}">删除</a></li>
+                        {{end}}
+                    </ol>
+                </div>
+                <div class="row" >
+                    <form action="/encryption" method="post" enctype="multipart/form-data">
+                        <label for="express">表达式</label>
+                        <input class="form-control" id="express" name="express" placeholder="请输入计算表达式:">
+                        <label for="pm_file">上传加密参数:</label>
+                        <input type="file" name="pm_file" id="pm_file" class="file" />
+                        <label for="pk_file">上传公钥:</label>
+                        <input type="file" name="pk_file" id="pk_file" class="file" />
+                        <button type="submit" class="btn btn-default">加密</button>
+                    </form>
+                </div>
+                <div class="row" >
+                    <label for="cipherfiles">待计算加密文件列表</label>
+                    <ol id="cipherfiles">
+                        {{ range $k2,$v2 := .CipherFilesMap }}
+                        <li id="{{$k2}}"><a href="/download/{{$v2}}">{{$v2}}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/delete/{{$v2}}">删除</a></li>
+                        {{end}}
+                    </ol>
+                </div>
+            <div class="row" >
+                <form action="/decrypt" method="post" enctype="multipart/form-data">
+                    <label for="re_file">上传待解密文件:</label>
+                    <input type="file" name="re_file" id="re_file" class="file" />
+                    <label for="pmt_file">上传加密参数:</label>
+                    <input type="file" name="pmt_file" id="pmt_file" class="file" />
+                    <label for="sk_file">提供解密私钥:</label>
+                    <input type="file" name="sk_file" id="sk_file" class="file" />
+                    <button type="submit" class="btn btn-default">解密</button>
+                </form>
+            </div>
+        </div>
+    </body>
+
+</html>
